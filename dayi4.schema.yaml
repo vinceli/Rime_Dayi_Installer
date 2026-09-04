@@ -1,0 +1,123 @@
+# Rime schema settings
+# encoding: utf-8
+schema:
+  schema_id: dayi4
+  name: "大易四碼"
+  version: "20260903"
+  author:
+    - todo
+  description: |
+    大易四碼與三碼完整輸入法 (含臺灣標準注音反查與方案切換)
+  dependencies:
+    - bopomofo_tw
+
+switches:
+  - name: ascii_mode
+    reset: 0
+    states: ["中文", "英文"]
+  - name: full_shape
+    states: ["半形", "全形"]
+  - name: simplification
+    states: ["繁體", "簡體"]
+
+engine:
+  processors:
+    - ascii_composer
+    - recognizer
+    - key_binder
+    - speller
+    - selector
+    - punctuator
+    - navigator
+    - express_editor
+  segmentors:
+    - ascii_segmentor
+    - matcher
+    - abc_segmentor
+    - punct_segmentor
+    - fallback_segmentor
+  translators:
+    - punct_translator
+    - reverse_lookup_translator
+    - table_translator
+  filters:
+    - simplifier
+    - uniquifier
+
+menu:
+  page_size: 5
+  select_keys: "_12345"
+  alternative_select_labels: ["空白", "'", "[", "]", "-"]
+
+speller:
+  alphabet: '0123456789/.,;abcdefghijklmnopqrstuvwxyz'
+  delimiter: " "
+  max_code_length: 4
+  auto_select: false
+
+translator:
+  dictionary: dayi4
+  enable_charset_filter: false
+  enable_sentence: false
+  enable_encoder: false
+  encode_commit_history: false
+  enable_user_dict: false
+  max_phrase_length: 4
+
+reverse_lookup:
+  dictionary: terra_pinyin
+  prism: bopomofo_tw
+  prefix: "`"
+  suffix: "'"
+  tips: "〔注音〕"
+  preedit_format:
+    - "xlit|1qaz2wsxedcrfv5tgbyhnujm8ik,9ol.0p;/- 6347|ㄅㄆㄇㄈㄉㄊㄋㄌㄍㄎㄏㄐㄑㄒㄓㄔㄕㄖㄗㄘㄙㄧㄨㄩㄚㄛㄜㄝㄞㄟㄠㄡㄢㄣㄤㄥㄦˉˊˇˋ˙|"
+  comment_format:
+    - "xform/^/〔/"
+    - "xform/$/〕/"
+
+punctuator:
+  full_shape:
+    " ": {commit: "　"}
+    "<": {commit: "，"}
+    ">": {commit: "。"}
+  half_shape:
+    "<": {commit: "，"}
+    ">": {commit: "。"}
+    "!": {commit: "！"}
+  symbols:
+    "=": ["＝", "，", "。", "、", "；", "：", "？", "！", "～", "—", "…", "「", "」", "『", "』"]
+    "=,": ["，"]
+    "=.": ["。"]
+    "=\\": ["、"]
+    "=;": ["；"]
+    "=:": ["："]
+    "=?": ["？"]
+    "=!": ["！"]
+    "=[": ["「"]
+    "=]": ["」"]
+    "=-": ["——"]
+    "=~": ["～"]
+    "=^": ["……"]
+    "=/": ["／"]
+    "=+": ["＋"]
+    "==": ["＝"]
+    "=1": ["①", "②", "③", "④", "⑤", "⑥", "⑦", "⑧", "⑨", "⑩"]
+    "=2": ["─", "│", "┌", "┐", "└", "┘", "├", "┤", "┬", "┴", "┼"]
+    "=3": ["（", "）", "〔", "〕", "［", "］", "｛", "｝", "〈", "〉", "《", "》", "「", "」", "『", "』"]
+    "=4": ["＋", "－", "×", "÷", "±", "√", "＝", "≠", "≦", "≧"]
+    "=5": ["＄", "￥", "€", "￡", "℃", "℉", "㎜", "㎝", "㎞", "㎡"]
+
+key_binder:
+  bindings:
+    - { when: has_menu, accept: apostrophe, send: KP_2 }
+    - { when: has_menu, accept: bracketleft, send: KP_3 }
+    - { when: has_menu, accept: bracketright, send: KP_4 }
+    - { when: has_menu, accept: minus, send: KP_5 }
+    - { when: paging, accept: Page_Up, send: Page_Up }
+    - { when: paging, accept: Page_Down, send: Page_Down }
+
+recognizer:
+  patterns:
+    reverse_lookup: "`[a-z0-9,./;-]*'?$"
+    punct: "^=.*$"

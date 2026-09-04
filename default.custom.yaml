@@ -1,0 +1,12 @@
+customization:
+  distribution_code_name: Weasel
+  distribution_version: 0.17.4
+patch:
+  schema_list:
+    - {schema: dayi4}
+    - {schema: bopomofo_tw}
+  switcher/hotkeys:
+    - Control+grave
+    - Control+Shift+grave
+    - Control+Shift+space
+    - F4
